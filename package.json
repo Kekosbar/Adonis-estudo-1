@@ -8,7 +8,11 @@
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
-    "migration": "node ace migration:run"
+    "migration": "node ace migration:run",
+    "new_migration": "node ace make:migration",
+    "controller": "node ace make:controller",
+    "model": "node ace make:model",
+    "validator": "node ace make:validator"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^5.3.7",

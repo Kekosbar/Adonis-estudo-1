@@ -30,3 +30,4 @@ Route.post('/teste/:nome', ({ response, params }) => {
 
 Route.get('posts', 'PostsController.index')
 Route.resource('users', 'UsersController')
+Route.resource('teams', 'TeamsController')
