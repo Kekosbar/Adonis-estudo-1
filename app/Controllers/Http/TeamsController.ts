@@ -21,12 +21,17 @@ export default class TeamsController {
   public async update(ctx: HttpContextContract) {
     const { params, request } = ctx
     const { id } = params
+    await request.validate(CreateTeamValidator)
     const body = request.body()
     const team = await Team.findOrFail(+id)
     
     team.name = body.name
 
-    return await team.save()
+    try{
+      return await team.save()
+    }catch(error){
+      return new ExceptionHandler().handle({ status: 400, message: error.message }, ctx)
+    }
   }
   
   public async destroy(ctx: HttpContextContract) {

@@ -28,13 +28,24 @@ export default class UsersController {
 
   public async update(ctx: HttpContextContract) {
     const { params, request, response } = ctx;
-    await request.validate(CreateUser)
+    // await request.validate(CreateUser)
     const id = +params.id
     const body = request.body()
+    
+    const [user] = await Database
+                      .query()
+                      .from('users')
+                      .where('id', id)
+                      .select('*')
+    if (!user) {
+      return new ExceptionHandler().handle({ status: 406, message: 'user not found' }, ctx)
+    }
+
     const editUser: User = {
-      name: body.name,
-      age: body.age,
-      email: body.email,
+      name: body.name ? body.name : user.name,
+      age: body.age ? body.age : user.age,
+      email: body.email ? body.email : user.email,
+      team_id: body.team_id ? body.team_id : user.team_id,
       updated_at: new Date()
     }
     await Database
@@ -66,6 +77,7 @@ export default class UsersController {
       name: body.name,
       age: body.age,
       email: body.email,
+      team_id: body.team_id,
       created_at: new Date(),
       updated_at: new Date()
     }
